@@ -1,0 +1,48 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#include<math.h>
+#pragma warning(disable:4996)
+
+//计算1000000以内的素数个数
+int Count_agreesum(int N)
+{
+	int i, j, k, num = 0, sum = 0, N2;
+	for (i = 13; i <= N; i = i + 2)
+	{
+		sum = 0;
+		for (j = 3; j < sqrt(i); j = j + 2)
+			if (i%j == 0) break;
+		if (j >= sqrt(i))
+		{
+			N2 = i;
+			while (N2 != 0)
+			{
+				sum = 10 * sum + N2 % 10;
+				N2 = N2 / 10;
+			}
+			if (sum % 2 != 0)
+			{
+				for (k = 3; k < sqrt(sum); k = k + 2)
+					if (sum%k == 0) break;
+				if (k >= sqrt(sum) && sum != N) num++;
+			}
+		}
+	}
+	return num;
+}
+
+int main()
+{
+	clock_t begin = 0, end = 0;
+	int N = 0, num = 0;
+	printf("请输入正整数:");
+	//scanf("%d\n",&N);有个非常大的坑，和\n有关，网上有相关链接对这个解释
+	scanf("%d", &N);
+	getchar();
+	begin = clock();
+	num = Count_agreesum(N);
+	end = clock();
+	printf("满足要求的数共%d，计算用时%f秒\n", num, (double)(end - begin) / CLOCKS_PER_SEC);
+	getchar();
+}
